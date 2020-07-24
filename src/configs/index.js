@@ -15,4 +15,3 @@ export default (app) => {
     console.log(`Server running on ${process.env.PORT}`);
   });
 }
-

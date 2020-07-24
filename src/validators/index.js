@@ -1,18 +1,17 @@
 import requireAll from 'require-all';
 import path from 'path';
 
-const pathSchemas = requireAll(
+const getSchema = requireAll(
   path.join(__dirname, './schemas'),
 );
 
 module.exports = (Schema) => {
-  const schema = pathSchemas[Schema];
+  const schema = getSchema[Schema];
   return async (ctx, next) => {
     try {
       await schema.validateAsync(ctx.request.body);
       next();
-    }
-    catch (err) { 
+    } catch (err) { 
       console.log(err);
       ctx.response.status = 422;
       ctx.response.body = {
