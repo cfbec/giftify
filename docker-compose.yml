@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  # database
+  mongo:
+    image: mongo:3.6.19-xenial
+    container_name: mongoserver
+    volumes:
+      - './dev/data:/data/db'
+    logging:
+       driver: none
+    ports:
+      - '27017:27017'
+  # api
+  giftify:
+    container_name: giftify
+    build:
+      context: .
+    depends_on:
+      - mongo
+    ports:
+      - '20145:20145'
+    environment:
+      NODE_ENV: development
+

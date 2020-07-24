@@ -1,6 +1,8 @@
 node_modules/
+dev/
 .env
 dist
 package-lock.json
+npm-debug.log
 yarn-error.log
 yarn.lock
