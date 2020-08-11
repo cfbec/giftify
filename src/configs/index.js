@@ -1,13 +1,18 @@
 import dotenv from 'dotenv';
 import bodyParser from 'koa-bodyparser';
+import error from './error';
 
 import setRoutes from './routes';
+import database from './db';
 
 dotenv.config();
 
-export default (app) => {
+export default async (app) => {
 
+  await database();
+  
   app.use(bodyParser());
+  app.use(error());
 
   setRoutes(app);
 

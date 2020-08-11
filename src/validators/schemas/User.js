@@ -11,7 +11,8 @@ module.exports = Joi.object({
   lastName: genericName,
   email: Joi.string().email(),
   username: genericName,
-  password: Joi.string().
-    pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
+  password: Joi.string()
+    .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
   birthday: Joi.date().max('1-1-2002'),
+  role: Joi.string().valid('admin', 'user'),
 });

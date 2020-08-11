@@ -16,6 +16,7 @@ services:
     container_name: giftify
     build:
       context: .
+    command: nodemon server.js --exec babel-node
     depends_on:
       - mongo
     ports:

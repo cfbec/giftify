@@ -15,6 +15,9 @@ RUN apk add --no-cache git
 ADD package.json $appDir
 RUN yarn
 
+# Added nodemon global
+RUN yarn global add nodemon --prefix /var/www/app/
+
 # Bundle app source
 ADD . $appDir
 
@@ -24,5 +27,5 @@ RUN yarn run build
 EXPOSE 20145
 
 # Staring App
-ENTRYPOINT ["node"]
-CMD ["dist/server.js"]
+ENTRYPOINT ["yarn"]
+CMD ["run dev"]

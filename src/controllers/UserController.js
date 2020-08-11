@@ -5,6 +5,8 @@
  * @author Cristian Becerra <c.becerra.valdes@gmail.com>
  */
 
+import UserService from '../services/UserService';
+
 /**
  * @class UserController
  * @classdesc User's controller.
@@ -15,7 +17,7 @@ class UserController {
   async get(ctx) {
     const data = ctx.request.body;
     ctx.response.status = 200;
-    ctx.response.body = data;
+    ctx.response.body = { };
   }
 
   async getDetails(ctx) {
@@ -32,13 +34,13 @@ class UserController {
 
   async create(ctx) {
     const data = ctx.request.body;
-    console.log(data);
+    const response = await UserService.create(data);
     ctx.response.status = 200;
-    ctx.response.body = data;
+    ctx.response.body = response;
   }
 
 }
 
 const UserCtrl = new UserController();
 
-export default UserCtrl;
+module.exports = UserCtrl;
