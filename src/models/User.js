@@ -5,7 +5,8 @@ const roles = [
   'user'
 ];
 
-const User = new mongoose.Schema({
+const User = new mongoose.Schema(
+  {
     firstName: {
       type: String,
       required: [true, 'Please enter a first name'],
@@ -28,7 +29,6 @@ const User = new mongoose.Schema({
       index: true,
     },
     password: String,
-    //salt: String,
     role: {
       type: String,
       enum: roles,

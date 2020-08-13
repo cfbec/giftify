@@ -15,28 +15,39 @@ import UserService from '../services/UserService';
 class UserController {
 
   async get(ctx) {
-    const data = ctx.request.body;
-    ctx.response.status = 200;
-    ctx.response.body = { };
+    const { query } = ctx.request;
+    const { collection, pagination } = await UserService.get(query);
+		ctx.response.set('X-Pagination-Total-Count', pagination.count);
+	  ctx.response.set('X-Pagination-Limit', pagination.limit);
+		ctx.response.status = 200;
+		ctx.response.body = collection;
   }
 
-  async getDetails(ctx) {
-    const data = ctx.request.body;
-    console.log(data);
+  async getById(ctx) {
+    const { id } = ctx.params;
+    const response = await UserService.getById(id)
     ctx.response.status = 200;
-    ctx.response.body = { 
-      details: {
-        name: 'random',
-        type: 'other type'
-      }
-    };
+    ctx.response.body = response;
   }
 
   async create(ctx) {
     const data = ctx.request.body;
     const response = await UserService.create(data);
-    ctx.response.status = 200;
+    ctx.response.status = 201;
     ctx.response.body = response;
+  }
+
+  async update(ctx) {
+    const data = ctx.request.body;
+    const { id }= ctx.params;
+    await UserService.updateById(id, data);
+    ctx.response.status = 204;
+  }
+
+  async delete(ctx) {
+    const { id } = ctx.params;
+    await UserService.deleteById(id);
+    ctx.response.status = 204;
   }
 
 }
