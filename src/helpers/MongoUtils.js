@@ -1,7 +1,7 @@
 
 class MongoUtils {
 
-  buidOpts(query = {}, opts = {}) {
+  buildOpts(query = {}, opts = {}) {
     const { excludeFields, fieldsDefault = {} } = opts;
     const {
       fields = null,

@@ -5,7 +5,8 @@
  * @author Cristian Becerra <c.becerra.valdes@gmail.com>
  */
 
-import UserService from '../services/UserService';
+import UserModel from '../models/User';
+import MongoUtil from '../helpers/MongoUtils';
 
 /**
  * @class UserController
@@ -15,7 +16,7 @@ import UserService from '../services/UserService';
 class UserController {
 
   constructor(userService) {
-    this.userServices = userService;
+    this.userServices = new userService(UserModel, MongoUtil);
   }
 
   get = async (ctx) => {
@@ -56,6 +57,4 @@ class UserController {
 
 }
 
-const UserCtrl = new UserController(UserService);
-
-module.exports = UserCtrl;
+module.exports = UserController;

@@ -6,8 +6,6 @@
  */
 import pick from 'lodash/pick';
 import httpError from 'http-errors';
-import MongoUtils from '../helpers/MongoUtils';
-import User from '../models/User';
 
 const ModifiableFields = [
   'firstName',
@@ -25,8 +23,9 @@ const ModifiableFields = [
  */
 class UserService {
 
-  constructor(userModel) {
+  constructor(userModel, MongoUtils) {
     this.userModel = userModel;
+    this.buildOpts = MongoUtils.buildOpts;
   }
 
   get = async (query) => {
@@ -34,7 +33,7 @@ class UserService {
       excludeFields: ['password', 'salt'],
       fieldsDefault: { password: 0, salt: 0 },
     };
-    const { fields, limit, skip, sort } = MongoUtils.buidOpts(query, params);
+    const { fields, limit, skip, sort } = this.buildOpts(query, params);
     const criteria = buildCriteria(query);
     const count = await this.userModel.countDocuments(criteria);
     const pagination = { count, limit };
@@ -99,6 +98,4 @@ function buildCriteria(query = {}) {
   return criteria;
 }
 
-const UserSrv = new UserService(User);
-
-export default UserSrv;
+export default UserService;
