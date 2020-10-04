@@ -43,7 +43,7 @@ class UserService {
     const criteria = { _id, $or: [{ deleted: { $exists: false } }, { deleted: false }] };
     const user = await User.findOne(criteria, { password: 0 });
     if (!user) {
-      throw httpError(404, `User ${_id} not found`);
+      throw httpError(404, `User with id '${_id}' not found`);
     }
     return user;
   }

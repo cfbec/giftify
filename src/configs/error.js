@@ -3,7 +3,10 @@ module.exports = () => async (ctx, next) => {
     await next();
   } catch (err) {
     if (err.status) {
-      ctx.response.body = err;
+      ctx.response.body = {
+        status: err.status,
+        message: err.message,
+      };
       ctx.response.status = err.status;
     } else {
       ctx.response.body = err;
