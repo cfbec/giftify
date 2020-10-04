@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 
 const roles = [
   'admin',
@@ -29,6 +30,7 @@ const User = new mongoose.Schema(
       index: true,
     },
     password: String,
+    salt: String,
     role: {
       type: String,
       enum: roles,
@@ -36,5 +38,11 @@ const User = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+User.pre('save', async function (next) {
+  this.salt = await bcrypt.genSalt();
+  this.password = await bcrypt.hash(this.password, this.salt);
+  await next();
+});
 
 module.exports = mongoose.model('User', User);

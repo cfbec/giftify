@@ -39,7 +39,7 @@ class UserController {
 
   async update(ctx) {
     const data = ctx.request.body;
-    const { id }= ctx.params;
+    const { id } = ctx.params;
     await UserService.updateById(id, data);
     ctx.response.status = 204;
   }

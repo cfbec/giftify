@@ -4,7 +4,6 @@ class MongoUtils {
   buidOpts(query = {}, opts = {}) {
     const { excludeFields, fieldsDefault = {} } = opts;
     const {
-      all = false,
       fields = null,
       limit = 10,
       page = 1,
@@ -24,7 +23,7 @@ class MongoUtils {
       validFields = fieldsDefault;
     }
     const skip = (parseInt(page, 10) - 1) * parseInt(limit, 10);
-    return { all: !!all, fields: validFields, limit: parseInt(limit, 10), skip, sort: { createdAt: -1 } };
+    return { fields: validFields, limit: parseInt(limit, 10), skip, sort: { createdAt: -1 } };
   }
 
 }

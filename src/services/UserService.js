@@ -26,19 +26,15 @@ class UserService {
 
   async get(query) {
     const params = {
-      excludeFields: ['password'],
-      fieldsDefault: { password: 0 },
+      excludeFields: ['password', 'salt'],
+      fieldsDefault: { password: 0, salt: 0 },
     };
-    const { all, fields, limit, skip, sort } = MongoUtils.buidOpts(query, params);
+    const { fields, limit, skip, sort } = MongoUtils.buidOpts(query, params);
     const criteria = buildCriteria(query);
     const count = await User.countDocuments(criteria);
-    const pagination = { count, limit: all ? count : limit };
-    let collection;
-    if (all) {
-      collection = await User.find(criteria, fields, { sort });
-    } else {
-      collection = await User.find(criteria, fields, { limit, skip, sort });
-    }
+    const pagination = { count, limit };
+    const collection = await User.find(criteria, fields, { limit, skip, sort });
+
     return { collection, pagination };
   }
 
@@ -52,7 +48,10 @@ class UserService {
   }
 
   async create(data) {
-    const user = await User.create(data);
+    const response = await User.create(data);
+    const user = response.toObject();
+    delete user.salt;
+    delete user.password;
     return user; 
   }
 
@@ -67,6 +66,7 @@ class UserService {
   }
 
 }
+
 function buildCriteria(query = {}) {
   const { search, fromDate, toDate } = query;
   const criteria = { };
