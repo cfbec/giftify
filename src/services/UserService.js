@@ -5,6 +5,7 @@
  * @author Cristian Becerra <c.becerra.valdes@gmail.com>
  */
 import pick from 'lodash/pick';
+import httpError from 'http-errors';
 import MongoUtils from '../helpers/MongoUtils';
 import User from '../models/User';
 
@@ -42,7 +43,7 @@ class UserService {
     const criteria = { _id, $or: [{ deleted: { $exists: false } }, { deleted: false }] };
     const user = await User.findOne(criteria, { password: 0 });
     if (!user) {
-      //throw new UserError('UserNotFound', `User ${_id} not found`);
+      throw httpError(404, `User ${_id} not found`);
     }
     return user;
   }
