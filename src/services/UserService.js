@@ -25,7 +25,11 @@ const ModifiableFields = [
  */
 class UserService {
 
-  async get(query) {
+  constructor(userModel) {
+    this.userModel = userModel;
+  }
+
+  get = async (query) => {
     const params = {
       excludeFields: ['password', 'salt'],
       fieldsDefault: { password: 0, salt: 0 },
@@ -39,7 +43,7 @@ class UserService {
     return { collection, pagination };
   }
 
-  async getById(_id) {
+  getById = async (_id) => {
     const criteria = { _id, $or: [{ deleted: { $exists: false } }, { deleted: false }] };
     const user = await User.findOne(criteria, { password: 0 });
     if (!user) {
@@ -48,7 +52,7 @@ class UserService {
     return user;
   }
 
-  async create(data) {
+  create = async (data) => {
     const response = await User.create(data);
     const user = response.toObject();
     delete user.salt;
@@ -56,12 +60,12 @@ class UserService {
     return user; 
   }
 
-  async updateById(_id, data) {
+  updateById = async (_id, data) => {
     await this.getById(_id);
     return User.updateOne({ _id }, { $set: { ...pick(data, ModifiableFields) } });
   }
   
-  async deleteById(id) {
+  deleteById = async (id) => {
     await this.getById(id);
     return User.deleteOne({ _id: id });
   }
@@ -95,6 +99,6 @@ function buildCriteria(query = {}) {
   return criteria;
 }
 
-const UserSrv = new UserService();
+const UserSrv = new UserService(User);
 
 export default UserSrv;

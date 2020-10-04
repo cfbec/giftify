@@ -2,12 +2,15 @@ module.exports = () => async (ctx, next) => {
   try {
     await next();
   } catch (err) {
-    if (err.status) {
+    console.error(err);
+    if (err.status || err.name === 'MongoError') {
+      // MongoError handle others code ie. E11000 duplicate key. 
+      // For all these types of error only conflict error (409) is indicated
+      ctx.response.status = err.status || 409;
       ctx.response.body = {
-        status: err.status,
-        message: err.message,
+        status: ctx.response.status,
+        message: JSON.stringify(err.message),
       };
-      ctx.response.status = err.status;
     } else {
       ctx.response.body = err;
       ctx.response.status = 500;

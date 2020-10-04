@@ -14,44 +14,48 @@ import UserService from '../services/UserService';
  */
 class UserController {
 
-  async get(ctx) {
+  constructor(userService) {
+    this.userServices = userService;
+  }
+
+  get = async (ctx) => {
     const { query } = ctx.request;
-    const { collection, pagination } = await UserService.get(query);
+    const { collection, pagination } = await this.userServices.get(query);
 		ctx.response.set('X-Pagination-Total-Count', pagination.count);
 	  ctx.response.set('X-Pagination-Limit', pagination.limit);
 		ctx.response.status = 200;
 		ctx.response.body = collection;
   }
 
-  async getById(ctx) {
+  getById = async (ctx) => {
     const { id } = ctx.params;
-    const response = await UserService.getById(id)
+    const response = await this.userServices.getById(id)
     ctx.response.status = 200;
     ctx.response.body = response;
   }
 
-  async create(ctx) {
+  create = async (ctx) => {
     const data = ctx.request.body;
-    const response = await UserService.create(data);
+    const response = await this.userServices.create(data);
     ctx.response.status = 201;
     ctx.response.body = response;
   }
 
-  async update(ctx) {
+  update = async (ctx) => {
     const data = ctx.request.body;
     const { id } = ctx.params;
-    await UserService.updateById(id, data);
+    await this.userServices.updateById(id, data);
     ctx.response.status = 204;
   }
 
-  async delete(ctx) {
+  delete = async (ctx) => {
     const { id } = ctx.params;
-    await UserService.deleteById(id);
+    await this.userServices.deleteById(id);
     ctx.response.status = 204;
   }
 
 }
 
-const UserCtrl = new UserController();
+const UserCtrl = new UserController(UserService);
 
 module.exports = UserCtrl;
