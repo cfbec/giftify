@@ -36,16 +36,16 @@ class UserService {
     };
     const { fields, limit, skip, sort } = MongoUtils.buidOpts(query, params);
     const criteria = buildCriteria(query);
-    const count = await User.countDocuments(criteria);
+    const count = await this.userModel.countDocuments(criteria);
     const pagination = { count, limit };
-    const collection = await User.find(criteria, fields, { limit, skip, sort });
+    const collection = await this.userModel.find(criteria, fields, { limit, skip, sort });
 
     return { collection, pagination };
   }
 
   getById = async (_id) => {
     const criteria = { _id, $or: [{ deleted: { $exists: false } }, { deleted: false }] };
-    const user = await User.findOne(criteria, { password: 0 });
+    const user = await this.userModel.findOne(criteria, { password: 0 });
     if (!user) {
       throw httpError(404, `User with id '${_id}' not found`);
     }
@@ -53,7 +53,7 @@ class UserService {
   }
 
   create = async (data) => {
-    const response = await User.create(data);
+    const response = await this.userModel.create(data);
     const user = response.toObject();
     delete user.salt;
     delete user.password;
@@ -62,12 +62,12 @@ class UserService {
 
   updateById = async (_id, data) => {
     await this.getById(_id);
-    return User.updateOne({ _id }, { $set: { ...pick(data, ModifiableFields) } });
+    return this.userModel.updateOne({ _id }, { $set: { ...pick(data, ModifiableFields) } });
   }
   
   deleteById = async (id) => {
     await this.getById(id);
-    return User.deleteOne({ _id: id });
+    return this.userModel.deleteOne({ _id: id });
   }
 
 }
