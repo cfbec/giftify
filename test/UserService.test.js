@@ -6,7 +6,7 @@ describe('UserService', () => {
   let mongoUtils;
   let userService;
 
-  beforeEach(() => {
+  beforeAll(() => {
     userModel = {
       countDocuments: jest.fn(),
       find: jest.fn(),
@@ -87,7 +87,7 @@ describe('UserService', () => {
     });
   });
   
-  describe('update Method', () => {
+  describe('updateById Method', () => {
     it('calls userModel.updateOne and returns the result', async () => {
       const _id = 1;
       const user = { 
@@ -103,7 +103,7 @@ describe('UserService', () => {
     });
   });
 
-  describe('delete Method', () => {
+  describe('deleteById Method', () => {
     it('calls userModel.deleteOne', async () => {
       const _id = 1;
       userModel.findOne.mockResolvedValue(1);
