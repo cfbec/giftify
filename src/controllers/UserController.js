@@ -22,10 +22,10 @@ class UserController {
   get = async (ctx) => {
     const { query } = ctx.request;
     const { collection, pagination } = await this.userServices.get(query);
-		ctx.response.set('X-Pagination-Total-Count', pagination.count);
-	  ctx.response.set('X-Pagination-Limit', pagination.limit);
-		ctx.response.status = 200;
-		ctx.response.body = collection;
+    ctx.response.set('X-Pagination-Total-Count', pagination.count);
+    ctx.response.set('X-Pagination-Limit', pagination.limit);
+    ctx.response.status = 200;
+    ctx.response.body = collection;
   }
 
   getById = async (ctx) => {
