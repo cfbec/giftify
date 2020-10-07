@@ -5,6 +5,7 @@ import cors from '@koa/cors';
 import error from './error';
 
 import setRoutes from './routes';
+import configPassport from './passport';
 import database from './db';
 
 dotenv.config();
@@ -19,8 +20,11 @@ export default async (app) => {
       exposedHeaders: ['X-Pagination-Total-Count', 'X-Pagination-Limit']
     })
   );
+
   app.use(bodyParser());
   app.use(error());
+  
+  configPassport();
   
   setRoutes(app);
 

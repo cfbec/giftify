@@ -46,7 +46,7 @@ class UserService {
     const criteria = { _id };
     const user = await this.userModel.findOne(criteria, { password: 0, salt: 0 });
     if (!user) {
-      throw httpError(404, `User with id '${_id}' not found`);
+      throw new httpError(404, `User with id '${_id}' not found`);
     }
     return user;
   }
