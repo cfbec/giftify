@@ -19,16 +19,16 @@ class AuthenticationPolicies {
   jwt = async (ctx, next) => {
     const cb = async (internalErr, user, tokenError) => {
       if (tokenError && tokenError.name === 'TokenExpiredError') {
-        throw new httpError(401, 'The Authentication token has expired');
+        throw new httpError(401, 'The Authentication token has expired.');
       }
       if (tokenError && tokenError.name === 'JsonWebTokenError') {
-        throw new httpError(401, 'The Authentication token is invalid or was vulnerated');
+        throw new httpError(401, 'The Authentication token is invalid or was vulnerated.');
       }
       if (tokenError) {
-        throw new httpError(401, 'Invalid token, Format is Authorization: Bearer [token]');
+        throw new httpError(401, 'Invalid token, Format is Authorization: Bearer [token].');
       }
       if (internalErr) {
-        throw new httpError(500, 'Internal Error');
+        throw new httpError(500, 'Internal Error.');
       }
       ctx.state.user = user;
       await next();

@@ -9,7 +9,7 @@ module.exports = () => async (ctx, next) => {
       ctx.response.status = err.status || 409;
       ctx.response.body = {
         status: ctx.response.status,
-        message: JSON.stringify(err.message),
+        message: err.message,
       };
     } else {
       ctx.response.body = err;
